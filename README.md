@@ -1,7 +1,7 @@
 # TestProject_SkyWeb
 CustomApi for request
 
-1) Create UITableView and fetch categories
+1) Create UITableView and fetch categories (native get json)
 
 ![Simulator Screen Shot - iPhone 11 - 2021-08-18 at 14 16 28](https://user-images.githubusercontent.com/40906632/129888981-347cfe64-2f46-47b2-9d9b-914760b4f6f4.png)
 
