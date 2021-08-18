@@ -9,33 +9,17 @@ import UIKit
 
 class DetailViewController: UIViewController {
 
-    lazy var nameLabel: UILabel = {
-        let label = UILabel()
-        label.toAutoLayout()
-        return label
-    }()
+    var product: Product?
     
-    lazy var ccalLabel: UILabel = {
-        let label = UILabel()
-        label.toAutoLayout()
-        return label
-    }()
-    
-    lazy var categoryLabel: UILabel = {
-        let label = UILabel()
-        label.toAutoLayout()
-        return label
-    }()
-    
-    lazy var dateLabel: UILabel = {
-        let label = UILabel()
-        label.toAutoLayout()
-        return label
-    }()
+    let nameLabel = UILabel()
+    let ccalLabel = UILabel()
+    let categoryLabel = UILabel()
+    let dateLabel = UILabel()
     
     lazy var pictureImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.toAutoLayout()
+        imageView.image = UIImage(named: "1")
         imageView.sizeToFit()
         return imageView
     }()
@@ -45,10 +29,31 @@ class DetailViewController: UIViewController {
         setupLayout()
     }
 
+    init(product: Product, category: String?) {
+        self.product = product
+        self.categoryLabel.text = category
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 }
 
 extension DetailViewController {
     private func setupLayout() {
+        
+        nameLabel.toAutoLayout()
+        nameLabel.text = product?.name
+        
+        ccalLabel.toAutoLayout()
+        ccalLabel.text = "\(product!.ccal!) ccal"
+        
+        categoryLabel.toAutoLayout()
+        
+        dateLabel.toAutoLayout()
+        dateLabel.text = product?.date
+        
         view.backgroundColor = .white
         view.addSubview(nameLabel)
         view.addSubview(ccalLabel)

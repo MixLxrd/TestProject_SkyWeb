@@ -11,8 +11,8 @@ class NetworkDataFetcher {
     
     let networkService = NetworkService()
     
-    func fetchCategories(urlString: String, response: @escaping (Categories?) -> Void) {
-        networkService.request(urlString: urlString) { (result) in
+    func fetchCategories(response: @escaping (Categories?) -> Void) {
+        networkService.request(urlString: "http://62.109.7.98/api/categories") { (result) in
             switch result {
             case .success(let data):
                 do {
@@ -29,8 +29,8 @@ class NetworkDataFetcher {
         }
     }
     
-    func fetchProducts(urlString: String, response: @escaping (Products?) -> Void) {
-        networkService.request(urlString: urlString) { (result) in
+    func fetchProducts(id: Int, response: @escaping (Products?) -> Void) {
+        networkService.request(urlString: "http://62.109.7.98/api/product/category/\(id)") { (result) in
             switch result {
             case .success(let data):
                 do {

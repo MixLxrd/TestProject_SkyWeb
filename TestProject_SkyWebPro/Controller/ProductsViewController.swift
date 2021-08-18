@@ -14,7 +14,7 @@ class ProductsViewController: UIViewController {
     var categoryID: Int? = nil
     private lazy var searchController = UISearchController(searchResultsController: nil)
     private lazy var refreshControl = UIRefreshControl()
-
+    
     var products: Products? {
         didSet {
             productsTableView.reloadData()
@@ -43,19 +43,18 @@ class ProductsViewController: UIViewController {
         tableView.dataSource = self
         return tableView
     }()
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupLayout()
         
         guard let id = categoryID else { return }
-        let urlString = "http://62.109.7.98/api/product/category/\(id)"
-        networkDataFetcher.fetchProducts(urlString: urlString) { response in
+        networkDataFetcher.fetchProducts(id: id) { response in
             guard let search = response else { return }
             self.products = search
         }
     }
-
+    
 }
 
 extension ProductsViewController {
@@ -86,8 +85,8 @@ extension ProductsViewController {
         if productsTableView.isDragging {
             productsTableView.reloadData()
             guard let id = categoryID else { return }
-            let urlString = "http://62.109.7.98/api/product/category/\(id)"
-            networkDataFetcher.fetchProducts(urlString: urlString) { response in
+            
+            networkDataFetcher.fetchProducts(id: id) { response in
                 guard let search = response else { return }
                 self.products = search
             }
@@ -122,24 +121,18 @@ extension ProductsViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
-        let vc = DetailViewController()
+        
         if isFiltering {
+            guard let p2 = searchedProducts?[indexPath.row] else { return }
+            let vc = DetailViewController(product: p2, category: title)
+            present(vc, animated: true, completion: nil)
             
-            let p2 = searchedProducts?[indexPath.row]
-            vc.nameLabel.text = p2?.name
-            vc.ccalLabel.text = "\(p2!.ccal!) ccal"
-            vc.categoryLabel.text = title
-            vc.dateLabel.text = p2?.date
-            vc.pictureImageView.image = #imageLiteral(resourceName: "1")
         } else {
-            let p1 = products?.data[indexPath.row]
-            vc.nameLabel.text = p1?.name
-            vc.ccalLabel.text = "\(p1!.ccal!) ccal"
-            vc.categoryLabel.text = title
-            vc.dateLabel.text = p1?.date
-            vc.pictureImageView.image = #imageLiteral(resourceName: "1")
+            guard let p1 = products?.data[indexPath.row] else { return }
+            let vc = DetailViewController(product: p1, category: title)
+            present(vc, animated: true, completion: nil)
         }
-        present(vc, animated: true, completion: nil)
+        
     }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle , forRowAt indexPath: IndexPath) {

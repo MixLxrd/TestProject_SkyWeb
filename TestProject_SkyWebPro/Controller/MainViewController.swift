@@ -30,8 +30,7 @@ class MainViewController: UIViewController {
         super.viewDidLoad()
         setupLayout()
         
-        let urlString = "http://62.109.7.98/api/categories"
-        networkDataFetcher.fetchCategories(urlString: urlString) { response in
+        networkDataFetcher.fetchCategories() { response in
             guard let search = response else { return }
             self.categories = search
         }
